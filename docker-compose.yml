@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: chat-redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    # for first spin we can just run mvn spring-boot:run locally instead of building image,
+    # but i'm still adding this so later i can do `docker compose up` and it just works.
+    build: ./backend
+    container_name: chat-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+
+  # frontend will come next message once we generate React client
+  frontend:
+    build: ./frontend
+    container_name: chat-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend

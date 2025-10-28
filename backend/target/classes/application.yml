@@ -1,0 +1,17 @@
+server:
+  port: 8080  # backend runs on 8080 locally. frontend (react) will run on something like 5173 or 3000
+
+spring:
+  redis:
+    host: redis        # notice i'm not using localhost. in docker-compose, service name "redis"
+    port: 6379
+
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+      INDENT_OUTPUT: true  # i like pretty json in responses while debugging
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web.socket: DEBUG  # i keep DEBUG on websocket so i can see connect/disconnect logs

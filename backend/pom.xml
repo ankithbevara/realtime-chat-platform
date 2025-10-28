@@ -1,0 +1,94 @@
+<!-- pom.xml
+     this is the backend build file. i'm using spring boot 3.x with java 17 because that's
+     what a lot of companies are on right now (java 11 still exists but most new services
+     i'm seeing are on 17). i'm keeping dependencies minimal at first so it's readable.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- standard maven model version -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- basic project coordinates -->
+    <groupId>com.chatapp</groupId> <!-- kind of like package namespace -->
+    <artifactId>realtime-chat-backend</artifactId> <!-- service name -->
+    <version>0.0.1-SNAPSHOT</version> <!-- snapshot because i'm still actively building -->
+
+    <!-- this tells maven we're using spring boot parent,
+         so we don't have to manually manage a million dependency versions -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version> <!-- spring boot 3.x: common in real projects right now -->
+        <relativePath/> <!-- always leave this -->
+    </parent>
+
+    <properties>
+        <!-- i'm locking java to 17 (LTS). this should run fine on most recruiters' laptops -->
+        <java.version>17</java.version>
+    </properties>
+
+    <dependencies>
+        <!-- Web / basic REST. honestly we won't poll messages with REST because we are using
+             sockets, but i still keep web here for health check endpoints and maybe auth/login -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- WebSocket support. this is how we do real-time chat without constant polling -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- Redis.
+             i'm using this because in real life when you scale to multiple backend pods,
+             if user A connects to pod #1 and user B connects to pod #2, messages still need
+             to reach everyone. Redis pub/sub helps broadcast messages across instances. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- Security.
+             i will wire a JWT handshake later so only authenticated users can open sockets. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Jackson for converting objects <-> JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- Lombok just to cut down boilerplate for getters/setters,
+             but i will still explain code in comments so it's not "magic". -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- basic testing stack from spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- this plugin lets us run `mvn spring-boot:run` while developing -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

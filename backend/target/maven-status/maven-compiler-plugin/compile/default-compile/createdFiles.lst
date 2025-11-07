@@ -1,8 +1,11 @@
 com/chatapp/security/JwtHandshakeInterceptor.class
 com/chatapp/model/ChatMessage.class
 com/chatapp/config/WebSocketConfig.class
+com/chatapp/config/RedisListenerConfig.class
 com/chatapp/App.class
+com/chatapp/config/RedisConfig.class
 com/chatapp/controller/ChatSocketController.class
 com/chatapp/service/RedisSubscriber.class
+com/chatapp/security/SecurityConfig.class
 com/chatapp/service/RedisPublisher.class
 com/chatapp/ChatApplication.class

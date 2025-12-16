@@ -1,6 +1,6 @@
 # Realtime Chat Platform
 
-Small side project I'm building to practice real-time messaging and horizontal scaling.
+Small side project I'm building to understand real-time messaging and horizontal scaling.
 
 ### Tech
 - Java 17 + Spring Boot 3 (WebSocket/STOMP)
